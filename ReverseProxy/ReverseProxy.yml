@@ -1,0 +1,52 @@
+- hosts: Controller
+  tasks:
+  - name: "Haproxy install or check"
+    package: 
+      name: haproxy
+      state: present
+
+  - name: "Start HAPROXY Service"
+    service: 
+      name: haproxy
+      state: started
+
+  - name: "Configure haproxy.cfg file"
+    template:
+      src: haproxy.cfg
+      dest: "/etc/haproxy/haproxy.cfg"
+    notify:
+      - Restart service
+
+  handlers:    
+    - name: "Restart service"
+      service: 
+        name: haproxy
+        state: restarted
+
+- hosts: WebServer
+  tasks:
+  - name: "Haproxy install or check"
+    package:
+      name: httpd
+      state: present
+
+      #- name: "ifconfig IP"i
+  - name: "Copy Content to a file index.html"
+    copy:
+      content: "<pre>
+      <h1 style='color:green;font-size:100px;text-align:center'>This is LoadBalancer</h1> 
+      <h1 style='color:skyblue;text-align:center;font-size:40px;'>This is Server IP {{ hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2] }} </h1>
+      </pre>"
+      dest: "/var/www/html/index.html"
+    notify: 
+      - Restart httpd Service
+  - name: "Start a httpd Server"
+    service: 
+      name: httpd
+      state: started  
+  
+  handlers:    
+    - name: "Restart httpd Service"
+      service: 
+        name: httpd
+        state: restarted
