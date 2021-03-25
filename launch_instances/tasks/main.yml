@@ -1,0 +1,63 @@
+---
+# tasks file for launch_instances
+- name: "installing boto3"
+  pip:
+        name: "boto3"
+
+- name: "launching Master for kubernetes ..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "K8S_Master"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "Master"
+             K8S: "Master"
+
+- name: "launching Slave1 for kubernetes ..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "Slave1"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "Slave"
+             node: "Slave1"
+
+- name: "launching Slave2 for kubernetes ..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "Slave2"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "Slave"
+             node: "Slave2"
+

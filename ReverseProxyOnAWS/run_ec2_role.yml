@@ -1,0 +1,4 @@
+- hosts: localhost
+  roles:
+    - name: "AWS_ec2 setup...."
+      role: launch_instances
