@@ -1,0 +1,82 @@
+---
+# tasks file for launch_instances
+- name: "installing boto3"
+  pip:
+        name: "boto3"
+
+- name: "launching  LoadBalancer..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "LB"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "LB"
+             LB: "1"
+
+- name: "launching Server One ..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "Server1"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "Server"
+             server: "Server1"
+
+- name: "launching Server Two ..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "Server2"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "Server"
+             server: "Server2"
+
+- name: "launching Server Three ..."
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "Server3"
+        state: present
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+             volume_size: "{{ vol_size }}"
+             delete_on_termination: true
+        tags:
+             name: "Server"
+             server: "Server3"
+

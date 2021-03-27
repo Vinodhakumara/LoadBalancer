@@ -1,0 +1,18 @@
+---
+# tasks file for LoadBalancer
+- name: "Haproxy install or check"
+  package: 
+    name: haproxy
+    state: present
+
+- name: "Start HAPROXY Service"
+  service: 
+    name: haproxy
+    state: started
+
+- name: "Configure haproxy.cfg file"
+  template:
+    src: haproxy.cfg
+    dest: "/etc/haproxy/haproxy.cfg"
+  notify:
+    - Restart service

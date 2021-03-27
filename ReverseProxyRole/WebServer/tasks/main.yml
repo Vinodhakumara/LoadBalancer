@@ -1,0 +1,23 @@
+---
+# tasks file for WebServer
+- name: "Haproxy install or check"
+  package:
+    name: httpd
+    state: present
+
+- name: "Get Public IP"
+  ipify_facts:
+
+- name: "Copy Content to a file index.html"
+  copy:
+    content: "<pre>
+      <h1 style='color:green;font-size:100px;text-align:center'>This is LoadBalancer</h1> 
+      <h1 style='color:skyblue;text-align:center;font-size:40px;'>This is Server IP    {{ ipify_public_ip }}  </h1>
+      </pre>"
+    dest: "/var/www/html/index.html"
+  notify: 
+    - Restart httpd Service
+- name: "Start a httpd Server"
+  service: 
+    name: httpd
+    state: started  

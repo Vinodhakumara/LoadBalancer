@@ -1,0 +1,17 @@
+#- hosts: localhost
+# roles:
+#   - name: "AWS_ec2 setup...."
+#     role: launch_instances
+
+- hosts: tag_Name_LB
+  become: true
+  roles:
+    - name: "Load Balancer setup...."
+      role: LoadBalancer
+
+- hosts: tag_name_Server
+  become: true
+  roles:
+    - name: "WebServer setup...."
+      role: WebServer
+
